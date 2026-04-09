@@ -1,0 +1,38 @@
+name: Setup GameFlow CLI
+description: Downloads and installs the GameFlow CLI binary on the runner, then optionally authenticates.
+
+inputs:
+  version:
+    description: >
+      Version of the GameFlow CLI to install. Reserved for future use — currently
+      the installer always installs the latest available release regardless of this
+      value. Version pinning will be supported in a future release.
+    required: false
+    default: latest
+  api-key:
+    description: >
+      GameFlow API key used to authenticate the CLI. If provided, the action will
+      run `gameflow login --api-key <key>` after installation. The key is masked
+      in all log output.
+    required: false
+
+runs:
+  using: composite
+  steps:
+    - name: Install GameFlow CLI
+      shell: bash
+      run: |
+        curl -fsSL https://install.gameflow.gg | sh
+
+    - name: Verify installation
+      shell: bash
+      run: gameflow --version
+
+    - name: Authenticate
+      if: ${{ inputs.api-key != '' }}
+      shell: bash
+      env:
+        INPUT_API_KEY: ${{ inputs.api-key }}
+      run: |
+        echo "::add-mask::$INPUT_API_KEY"
+        gameflow login --api-key "$INPUT_API_KEY"
