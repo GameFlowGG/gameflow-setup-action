@@ -16,6 +16,10 @@ inputs:
       in all log output.
     required: false
 
+branding:
+  icon: 'terminal'
+  color: 'blue'
+
 runs:
   using: composite
   steps:
@@ -23,6 +27,7 @@ runs:
       shell: bash
       run: |
         curl -fsSL https://install.gameflow.gg | sh
+        echo "$HOME/.gameflow/bin" >> $GITHUB_PATH
 
     - name: Verify installation
       shell: bash
@@ -36,3 +41,8 @@ runs:
       run: |
         echo "::add-mask::$INPUT_API_KEY"
         gameflow login --api-key "$INPUT_API_KEY"
+
+    - name: Who am I
+      if: ${{ inputs.api-key != '' }}
+      shell: bash
+      run: gameflow whoami
