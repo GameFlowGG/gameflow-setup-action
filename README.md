@@ -95,3 +95,18 @@ This action follows [Semantic Versioning](https://semver.org).
 ## Documentation
 
 Full GameFlow documentation is available at [https://docs.gameflow.gg](https://docs.gameflow.gg).
+
+
+## AI Development Setup
+
+This repo uses Claude Code as the primary AI development tool. Install the required plugins once per machine before contributing:
+
+```bash
+claude plugin marketplace add anthropics/claude-plugins-official
+claude plugin install superpowers@claude-plugins-official
+claude plugin install security-guidance@claude-plugins-official
+claude plugin install code-review@claude-plugins-official
+claude plugin install feature-dev@claude-plugins-official
+```
+
+See `CLAUDE.md` for when each plugin is used.
